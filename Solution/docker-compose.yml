@@ -26,7 +26,20 @@ services:
       timeout: 1s
       retries: 3
       start_period: 10s
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - webapi-network
+    restart: always
 
 networks:
   webapi-network:
     driver: bridge
+
+volumes:
+  ollama-data:
