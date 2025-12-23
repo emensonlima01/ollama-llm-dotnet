@@ -1,7 +1,7 @@
-using Application.Abstractions;
 using Infrastructure.ChatProviders;
 using Infrastructure.ChatProviders.Ollama;
 using System;
+using Domain.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -16,13 +16,13 @@ public static class InfrastructureServiceCollectionExtensions
             .AddRepositories()
             .AddDomainServices();
 
-        services.Configure<ChatProviderOptions>(configuration.GetSection("ChatProvider"));
-        services.AddHttpClient<IChatProvider, OllamaChatProvider>((sp, client) =>
+        services.Configure<ChatProviderSettings>(configuration.GetSection("ChatProvider"));
+        services.AddHttpClient<IChatModelProvider, OllamaChatModelProvider>((sp, client) =>
         {
-            var options = sp.GetRequiredService<IOptions<ChatProviderOptions>>().Value;
-            if (!string.Equals(options.Provider, "Ollama", StringComparison.OrdinalIgnoreCase))
+            var options = sp.GetRequiredService<IOptions<ChatProviderSettings>>().Value;
+            if (!string.Equals(options.ActiveProvider, "Ollama", StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidOperationException($"Unsupported chat provider '{options.Provider}'.");
+                throw new InvalidOperationException($"Unsupported chat provider '{options.ActiveProvider}'.");
             }
 
             client.BaseAddress = new Uri(options.Ollama.BaseUrl);

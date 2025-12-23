@@ -1,6 +1,6 @@
 namespace Application.DTOs;
 
-public record ChatRequest(
+public sealed record ChatCompletionRequest(
     string Prompt,
     string Model
 );

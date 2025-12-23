@@ -11,16 +11,16 @@ public static class ChatEndpoints
         var group = routes.MapGroup("/api/chat")
             .WithTags("Chat");
 
-        group.MapPost("/", SendPrompt)
-            .WithName("ChatPrompt");
+        group.MapPost("/", GenerateCompletion)
+            .WithName("ChatCompletion");
 
         group.MapGet("/models", ListModels)
             .WithName("ChatModels");
     }
 
-    private static async Task<IResult> SendPrompt(
-        [FromBody] ChatRequest request,
-        [FromServices] ChatUseCase useCase,
+    private static async Task<IResult> GenerateCompletion(
+        [FromBody] ChatCompletionRequest request,
+        [FromServices] GenerateChatCompletionUseCase useCase,
         CancellationToken cancellationToken)
     {
         var response = await useCase.Handle(request, cancellationToken);
@@ -28,7 +28,7 @@ public static class ChatEndpoints
     }
 
     private static async Task<IResult> ListModels(
-        [FromServices] ListModelsUseCase useCase,
+        [FromServices] ListChatModelsUseCase useCase,
         CancellationToken cancellationToken)
     {
         var response = await useCase.Handle(cancellationToken);

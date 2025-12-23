@@ -14,8 +14,8 @@ public static class ApplicationServiceCollectionExtensions
 
     private static IServiceCollection AddUseCases(this IServiceCollection services)
     {
-        services.AddScoped<ChatUseCase>();
-        services.AddScoped<ListModelsUseCase>();
+        services.AddScoped<GenerateChatCompletionUseCase>();
+        services.AddScoped<ListChatModelsUseCase>();
 
         return services;
     }

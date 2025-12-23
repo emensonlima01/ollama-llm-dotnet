@@ -1,5 +1,5 @@
 namespace Application.DTOs;
 
-public sealed record ModelsResponse(
+public sealed record ChatModelsResponse(
     IReadOnlyList<string> Models
 );

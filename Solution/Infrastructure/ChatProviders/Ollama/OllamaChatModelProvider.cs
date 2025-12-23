@@ -1,10 +1,10 @@
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
-using Application.Abstractions;
+using Domain.Abstractions;
 
 namespace Infrastructure.ChatProviders.Ollama;
 
-public sealed class OllamaChatProvider(HttpClient httpClient) : IChatProvider
+public sealed class OllamaChatModelProvider(HttpClient httpClient) : IChatModelProvider
 {
     public async Task<string> GenerateAsync(string prompt, string model, CancellationToken cancellationToken = default)
     {

@@ -1,5 +1,5 @@
 namespace Application.DTOs;
 
-public record ChatResponse(
+public sealed record ChatCompletionResponse(
     string Response
 );
