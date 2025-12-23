@@ -1,13 +1,13 @@
+using Application.Abstractions;
 using Application.DTOs;
 
 namespace Application.UseCases;
 
-public class ChatUseCase
+public class ChatUseCase(IChatProvider chatProvider)
 {
-    public Task<ChatResponse> Handle(ChatRequest request)
+    public async Task<ChatResponse> Handle(ChatRequest request, CancellationToken cancellationToken = default)
     {
-        // TODO: implementar regras de negocio para gerar a resposta.
-        var response = new ChatResponse("TODO: implementar regras de negocio.");
-        return Task.FromResult(response);
+        var response = await chatProvider.GenerateAsync(request.Prompt, request.Model, cancellationToken);
+        return new ChatResponse(response);
     }
 }

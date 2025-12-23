@@ -8,7 +8,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHealthChecks();
 
-builder.Services.AddApplicationServices();
+builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 

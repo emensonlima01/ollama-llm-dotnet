@@ -1,45 +1,15 @@
 services:
-  webapi:
-    build:
-      context: .
-      dockerfile: WebApi/Dockerfile
-    container_name: webapi
-    ports:
-      - "8080:8080"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - DOTNET_GCHeapHardLimit=0x8000000
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 256M
-        reservations:
-          cpus: '0.25'
-          memory: 128M
-    networks:
-      - webapi-network
-    restart: always
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
-      interval: 1s
-      timeout: 1s
-      retries: 3
-      start_period: 10s
   ollama:
     image: ollama/ollama:latest
     container_name: ollama
     ports:
       - "11434:11434"
+    environment:
+      - OLLAMA_MODEL=llama3
+    entrypoint: ["/bin/sh", "-c", "ollama serve & pid=$$!; sleep 2; ollama pull $${OLLAMA_MODEL}; wait $$pid"]
     volumes:
       - ollama-data:/root/.ollama
-    networks:
-      - webapi-network
     restart: always
-
-networks:
-  webapi-network:
-    driver: bridge
 
 volumes:
   ollama-data:
